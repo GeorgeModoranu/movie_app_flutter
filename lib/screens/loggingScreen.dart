@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobx/mobx.dart';
+import 'package:movie_app/helper/resource.dart';
+import 'package:movie_app/login/login_view_model.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -33,8 +37,36 @@ class Header extends StatelessWidget {
   }
 }
 
-class LoginContent extends StatelessWidget {
+class LoginContent extends StatefulWidget {
   const LoginContent({super.key});
+
+  @override
+  State<LoginContent> createState() => _LoginContentState();
+}
+
+class _LoginContentState extends State<LoginContent> {
+  late final TextEditingController password, userName;
+  late final LoginViewModel viewModel;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    userName = TextEditingController();
+    password = TextEditingController();
+    viewModel = LoginViewModel();
+    when((_) => viewModel.succesLogin, () {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        context.goNamed('homeScreen');
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    userName.dispose();
+    password.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +103,7 @@ class LoginContent extends StatelessWidget {
                           labelText: 'Email',
                           enabledBorder: OutlineInputBorder(
                             borderSide:
-                            BorderSide(color: Colors.white, width: 1.0),
+                                BorderSide(color: Colors.white, width: 1.0),
                           ),
                           focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.white)),
@@ -87,13 +119,13 @@ class LoginContent extends StatelessWidget {
                           labelText: 'Password',
                           enabledBorder: OutlineInputBorder(
                               borderSide:
-                              BorderSide(color: Colors.white, width: 1)),
+                                  BorderSide(color: Colors.white, width: 1)),
                           focusedBorder: OutlineInputBorder(
                               borderSide:
-                              BorderSide(color: Colors.white, width: 1)),
+                                  BorderSide(color: Colors.white, width: 1)),
                           errorBorder: OutlineInputBorder(
                               borderSide:
-                              BorderSide(color: Colors.white, width: 1)),
+                                  BorderSide(color: Colors.white, width: 1)),
                           suffixIcon: Icon(
                             Icons.remove_red_eye_outlined,
                           ),
@@ -110,10 +142,16 @@ class LoginContent extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10))),
                         child: const Text('Login'),
                         onPressed: () {
-                         context.goNamed('homeScreen');
+                          viewModel.logIn(userName.text, password.text);
                         },
                       ),
                     ),
+                    Observer(builder: (context) {
+                      return viewModel.login.maybeMap(
+                        orElse: () => const SizedBox.shrink(),
+                        error: (value) => Text(value.error),
+                      );
+                    })
                   ],
                 ),
               ),
@@ -122,4 +160,3 @@ class LoginContent extends StatelessWidget {
     );
   }
 }
-

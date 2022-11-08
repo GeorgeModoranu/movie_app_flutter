@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movie_app/screens/screens.dart';
-void main() => runApp(MyApp());
+import 'package:movie_app/storage/storage_module.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await StorageModule.getInstance().initModule();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -9,12 +15,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-
       debugShowCheckedModeBanner: false,
       routerConfig: _router,
     );
   }
 }
+
 final GoRouter _router = GoRouter(
   initialLocation: '/login',
   routes: [
@@ -24,15 +30,15 @@ final GoRouter _router = GoRouter(
       builder: (context, state) => const LoginScreen(),
     ),
     GoRoute(
-        name: 'homescreen',
+        name: 'homeScreen',
         path: '/',
         builder: (context, state) => const HomeScreen(),
-        routes: [GoRoute(
-          name: 'detailPage',
-          path: 'detailPage',
-          builder: (context, state) => DetailPage(),
-        ),]
-        ),
+        routes: [
+          GoRoute(
+            name: 'detailPage',
+            path: 'detailPage',
+            builder: (context, state) => const DetailPage(),
+          ),
+        ]),
   ],
 );
-
