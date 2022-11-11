@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/movies/movie.dart';
 import 'package:movie_app/presentation/movies_view_model.dart';
 import 'package:movie_app/widget/movie_section.dart';
 import 'package:movie_app/widget/star_section.dart';
@@ -18,6 +19,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final viewModel = MoviesViewModel();
+  late Stream<List<Movie>> _getMovies;
+  @override
+  void initState() {
+    super.initState();
+    _getMovies = viewModel.movieStream();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,16 +61,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 success: (value) => MovieSection(
                     title: 'Top Rated Movies', movies: value.data));
           }),
-          Observer(builder: (context) {
-            return viewModel.popularMovies.map(
-                initial: (_) =>
-                    const Center(child: CircularProgressIndicator()),
-                loading: (_) =>
-                    const Center(child: CircularProgressIndicator()),
-                error: (value) => Text(value.error),
-                success: (value) =>
-                    MovieSection(title: 'Popular movies', movies: value.data));
-          }),
+          StreamBuilder<List<Movie>>(
+              stream: _getMovies,
+              builder: (context, snapshot) {
+                if (snapshot.hasError)
+                  return Text("error");
+                else if (snapshot.connectionState == ConnectionState.waiting)
+                  return CircularProgressIndicator();
+                return MovieSection(
+                    title: "Popula Movies", movies: snapshot.requireData);
+              }),
           Observer(builder: (context) {
             return viewModel.nowPlayingMovies.map(
                 initial: (_) =>

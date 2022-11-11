@@ -5,7 +5,9 @@ import '../mobx/movie_repository.dart';
 import '../movies/movie.dart';
 
 part 'movies_view_model.g.dart';
+
 class MoviesViewModel = MoviesViewModelBase with _$MoviesViewModel;
+
 abstract class MoviesViewModelBase with Store {
   MoviesViewModelBase() {
     getMovies();
@@ -28,17 +30,22 @@ abstract class MoviesViewModelBase with Store {
   Resource<List<Movie>> nowPlayingMovies = Resource.initial();
   @observable
   Resource<List<Movie>> outInCinema = Resource.initial();
-  // @action
+
   Future<void> getMovies({final int page = 1}) async {
     popularMovies = Resource.loading();
     try {
       await Future.delayed(const Duration(seconds: 1));
-      popularMovies = Resource.success(
-          data: (await repository.getPopularMovies()).asObservable());
+
+      repository.loadMovies();
     } catch (ex) {
       popularMovies = Resource.error(error: ex.toString());
     }
   }
+
+  Stream<List<Movie>> movieStream() {
+    return repository.allMovies();
+  }
+
   Future<void> getMoviesRated({final int page = 1}) async {
     topRatedMovies = Resource.loading();
     try {
@@ -49,6 +56,7 @@ abstract class MoviesViewModelBase with Store {
       topRatedMovies = Resource.error(error: ex.toString());
     }
   }
+
   Future<void> getNowPlayingMovies({final int page = 1}) async {
     nowPlayingMovies = Resource.loading();
     try {
@@ -59,6 +67,7 @@ abstract class MoviesViewModelBase with Store {
       nowPlayingMovies = Resource.error(error: ex.toString());
     }
   }
+
   Future<void> getOutInCinema({final int page = 1}) async {
     outInCinema = Resource.loading();
     try {
