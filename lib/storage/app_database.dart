@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
+import 'package:injectable/injectable.dart';
 import 'package:movie_app/movies/movie.dart';
 import 'package:movie_app/movies/movie_tables.dart';
 import 'package:path_provider/path_provider.dart';

@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 import 'package:movie_app/helper/resource.dart';
 
@@ -6,16 +7,20 @@ import '../movies/movie.dart';
 
 part 'movies_view_model.g.dart';
 
-class MoviesViewModel = MoviesViewModelBase with _$MoviesViewModel;
+@injectable
+class MoviesViewModel extends MoviesViewModelBase with _$MoviesViewModel {
+  MoviesViewModel(final MovieRepository repository) : super(repository);
+}
 
 abstract class MoviesViewModelBase with Store {
-  MoviesViewModelBase() {
+  final MovieRepository repository;
+  MoviesViewModelBase(this.repository) {
     getMovies();
     getMoviesRated();
     getNowPlayingMovies();
     getOutInCinema();
   }
-  final repository = MovieRepository();
+
   @observable
   bool isLoading = false;
   @observable

@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:mobx/mobx.dart';
 import 'package:movie_app/helper/resource.dart';
 import 'package:movie_app/login/login_view_model.dart';
+import 'package:movie_app/main.dart';
+import 'package:movie_app/storage/di.iconfig.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -53,7 +55,7 @@ class _LoginContentState extends State<LoginContent> {
     super.initState();
     userName = TextEditingController();
     password = TextEditingController();
-    viewModel = LoginViewModel();
+    viewModel = getIt<LoginViewModel>();
     when((_) => viewModel.succesLogin, () {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         context.goNamed('homeScreen');

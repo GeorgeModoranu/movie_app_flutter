@@ -1,12 +1,15 @@
 import 'package:analyzer/dart/element/type.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 import 'package:movie_app/movies/movie.dart';
 import 'package:movie_app/storage/app_database.dart';
 import 'package:movie_app/storage/storage_module.dart';
 export 'package:movie_app/movies/movie_tables.dart';
 
+@lazySingleton
 class MovieDao {
-  final AppDatabase _db = StorageModule.getInstance().database;
+  final AppDatabase _db;
+  MovieDao(this._db);
 
   Stream<List<Movie>> watchAllMovies() {
     return _db.select(_db.movieTables).watch();

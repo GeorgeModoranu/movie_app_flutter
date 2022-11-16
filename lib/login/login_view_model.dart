@@ -1,17 +1,17 @@
+import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 import 'package:movie_app/helper/resource.dart';
 import 'package:movie_app/loginRepository/login_repository.dart';
 
 part 'login_view_model.g.dart';
 
+@injectable
 class LoginViewModel = LoginViewModelBase with _$LoginViewModel;
 
 abstract class LoginViewModelBase with Store {
   late final LoginRepository repository;
 
-  LoginViewModelBase() {
-    repository = LoginRepository();
-  }
+  LoginViewModelBase(this.repository);
 
   @observable
   bool isLoading = false;

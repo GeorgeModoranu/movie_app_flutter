@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:movie_app/mobx/movie_api.dart';
+import 'package:movie_app/mobx/movie_repository.dart';
+import 'package:movie_app/movies/moive_dao.dart';
+import 'package:movie_app/networking/networking.dart';
+import 'package:movie_app/presentation/movies_view_model.dart';
 import 'package:movie_app/screens/screens.dart';
+import 'package:movie_app/storage/app_database.dart';
+import 'package:movie_app/storage/di.iconfig.dart';
 import 'package:movie_app/storage/storage_module.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await StorageModule.getInstance().initModule();
+  await configureInjection();
+
   runApp(MyApp());
 }
 

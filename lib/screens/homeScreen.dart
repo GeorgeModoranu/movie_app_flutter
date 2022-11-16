@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/main.dart';
 import 'package:movie_app/movies/movie.dart';
 import 'package:movie_app/presentation/movies_view_model.dart';
+import 'package:movie_app/storage/di.iconfig.dart';
 import 'package:movie_app/widget/movie_section.dart';
 import 'package:movie_app/widget/star_section.dart';
 import 'package:movie_app/widget/upcoming_section.dart';
@@ -18,7 +20,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final viewModel = MoviesViewModel();
+  final viewModel = getIt<MoviesViewModel>();
   late Stream<List<Movie>> _getMovies;
   @override
   void initState() {
