@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/main.dart';
 import 'package:movie_app/movies/movie.dart';
 import 'package:movie_app/presentation/movies_view_model.dart';
+import 'package:movie_app/screens/loggingScreen.dart';
 import 'package:movie_app/storage/di.iconfig.dart';
 import 'package:movie_app/widget/movie_section.dart';
 import 'package:movie_app/widget/star_section.dart';
@@ -27,17 +28,35 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _getMovies = viewModel.movieStream();
   }
+  //   leading: Image.asset('assets/profileIcon.png'),
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xFFE41F2D),
         elevation: 5,
-        backgroundColor: Colors.red,
-        leading: Image.asset('assets/profileIcon.png'),
-        actions: const [
-          Icon(Icons.search, size: 45.0),
-          Padding(padding: EdgeInsets.symmetric(horizontal: 20))
+        leading: Container(
+          child: GestureDetector(
+            onTap: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const LoginScreen())),
+            child: Image.asset('assets/profileIcon.png'),
+          ),
+        ),
+        actions: [
+          const SizedBox(
+            width: 8,
+          ),
+          GestureDetector(
+            onTap: () => print('tapped'),
+            child: const Icon(
+              Icons.search,
+              size: 30,
+            ),
+          ),
+          const SizedBox(
+            width: 8,
+          )
         ],
       ),
       body: ListView(

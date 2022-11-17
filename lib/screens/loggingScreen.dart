@@ -51,7 +51,6 @@ class _LoginContentState extends State<LoginContent> {
   late final LoginViewModel viewModel;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     userName = TextEditingController();
     password = TextEditingController();

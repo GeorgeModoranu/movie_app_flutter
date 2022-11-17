@@ -29,4 +29,9 @@ class MovieRepository {
   Stream<List<Movie>> allMovies() {
     return _dao.watchAllMovies();
   }
+
+  Future<Movie> getMovieDetails(int movieId) async {
+    final Movie result = await api.getMovieDetails(movieId);
+    return result;
+  }
 }

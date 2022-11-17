@@ -36,7 +36,6 @@ abstract class LoginRepositoryBase with Store {
   final RequestTokenAPI getRequestTokenApi;
   final SessionTokenApi newSessionToken;
   final SharedPreferences sharedPreferences;
-  //final FlutterSecureStorage secureStorage =StorageModule.getInstance().secureStorage;
 
   Future<bool> login(String username, String password) async {
     try {
@@ -54,10 +53,7 @@ abstract class LoginRepositoryBase with Store {
 
       await sharedPreferences.setString(sessionId, session.value);
 
-      // await secureStorage.write(key: requestToken, value: token.value);
-      // await secureStorage.write(
-      //     key: expiresTokenAt, value: token.expiresAt.toIso8601String());
-      // await secureStorage.write(key: sessionId, value: session.value);
+
       checkAutentification();
       return true;
     } catch (ex) {

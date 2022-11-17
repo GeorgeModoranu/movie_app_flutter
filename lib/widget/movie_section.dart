@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../model/movie_model_mock.dart';
 import '../movies/movie.dart';
 
-class MovieSection extends StatefulWidget {
+class MovieSection extends StatelessWidget {
   final String title;
   final List<Movie> movies;
 
   const MovieSection({super.key, required this.title, required this.movies});
 
-  @override
-  State<MovieSection> createState() => _MovieSectionState();
-}
-
-class _MovieSectionState extends State<MovieSection> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -31,7 +25,7 @@ class _MovieSectionState extends State<MovieSection> {
                       bottomRight: Radius.circular(4),
                       topRight: Radius.circular(4)),
                   color: Colors.red),
-              child: Text(widget.title),
+              child: Text(title),
             ),
           ),
           SizedBox(
@@ -40,7 +34,7 @@ class _MovieSectionState extends State<MovieSection> {
                 physics: const BouncingScrollPhysics(),
                 padding: EdgeInsets.all(8),
                 scrollDirection: Axis.horizontal,
-                itemCount: widget.movies.length,
+                itemCount: movies.length,
                 itemBuilder: (context, index) {
                   return Container(
                     padding: EdgeInsets.all(5),
@@ -51,14 +45,15 @@ class _MovieSectionState extends State<MovieSection> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             image: DecorationImage(
-                                image: NetworkImage(
-                                    widget.movies[index].posterPath),
+                                image: NetworkImage(movies[index].posterPath),
                                 fit: BoxFit.cover),
                           ),
                           height: 160,
                           child: GestureDetector(
                             onTap: () {
-                              context.goNamed("detailPage");
+                              context.goNamed('detailPage', params: {
+                                'movieId': movies[index].id.toString()
+                              });
                             },
                           ),
                         ),

@@ -32,4 +32,9 @@ class MoviesApi {
         await dio.get('/movie/upcoming', queryParameters: {'page': page});
     return GenreMovieResponse.fromJson(response.data).toDomainList();
   }
+
+  Future<Movie> getMovieDetails(int movieId) async {
+    final response = await dio.get('/movie/${movieId}');
+    return MovieResponse.fromJson(response.data).toDomain();
+  }
 }

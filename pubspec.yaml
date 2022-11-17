@@ -47,7 +47,7 @@ dev_dependencies:
   freezed: ^2.2.0
   json_serializable: ^6.5.1
   drift_dev: ^2.1.0
-  injectable_generator:  
+  injectable_generator: ^1.5.4
 
 
 flutter:
