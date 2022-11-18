@@ -11,7 +11,7 @@ import 'package:injectable/injectable.dart' as _i2;
 import 'package:shared_preferences/shared_preferences.dart' as _i10;
 
 import '../login/login_view_model.dart' as _i12;
-import '../loginDate/request_token_api.dart' as _i8;
+import '../login/request_token_api.dart' as _i8;
 import '../loginDate/session_token.dart' as _i9;
 import '../loginRepository/login_API_request.dart' as _i5;
 import '../loginRepository/login_repository.dart' as _i11;

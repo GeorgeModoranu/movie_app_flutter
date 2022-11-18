@@ -1,6 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
+import 'package:movie_app/login/request_token_api.dart';
 import 'package:movie_app/loginRepository/login_API_request.dart';
 import 'package:movie_app/loginDate/request_token.dart';
 import 'package:movie_app/loginDate/session_load.dart';
@@ -9,7 +10,6 @@ import 'package:movie_app/loginRepository/login_date_API.dart';
 import 'package:movie_app/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../loginDate/request_token_api.dart';
 import '../storage/storage_module.dart';
 
 part 'login_repository.g.dart';
@@ -52,7 +52,6 @@ abstract class LoginRepositoryBase with Store {
           .newSession(SessionLoad(requestToken: sesionToken.value));
 
       await sharedPreferences.setString(sessionId, session.value);
-
 
       checkAutentification();
       return true;
