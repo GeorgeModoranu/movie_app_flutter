@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:movie_app/mobx/movie_api.dart';
-import 'package:movie_app/mobx/movie_repository.dart';
-import 'package:movie_app/movies/moive_dao.dart';
-import 'package:movie_app/networking/networking.dart';
-import 'package:movie_app/presentation/movies_view_model.dart';
-import 'package:movie_app/screens/screens.dart';
-import 'package:movie_app/storage/app_database.dart';
-import 'package:movie_app/storage/di.iconfig.dart';
-import 'package:movie_app/storage/storage_module.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:movie_app/core/di.iconfig.dart';
+import 'package:movie_app/movie/presentation/screens/detailPage.dart';
+import 'package:movie_app/movie/presentation/screens/homeScreen.dart';
+import 'package:movie_app/movie/presentation/screens/loggingScreen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +30,9 @@ final GoRouter _router = GoRouter(
     GoRoute(
       name: 'login',
       path: '/login',
-      builder: (context, state) { return const LoginScreen();},
+      builder: (context, state) {
+        return const LoginScreen();
+      },
     ),
     GoRoute(
         name: 'homeScreen',
@@ -52,4 +47,12 @@ final GoRouter _router = GoRouter(
           ),
         ]),
   ],
+  // redirect: (context, state) {
+  //   final loginRepository = getIt<LoginRepository>();
+  //   if (loginRepository.isLogin) {
+  //     return null;
+  //   } else {
+  //     return '/login';
+  //   }
+  // }
 );
