@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/core/di.iconfig.dart';
 import 'package:movie_app/movie/domain/movie.dart';
+import 'package:movie_app/favorite/presentation/favorite_screen.dart';
 import 'package:movie_app/movie/presentation/widgets/movies_view_model.dart';
-import 'package:movie_app/movie/presentation/screens/loggingScreen.dart';
-import 'package:movie_app/movie/presentation/widgets/movie_section.dart';
-import 'package:movie_app/movie/presentation/widgets/star_section.dart';
-import 'package:movie_app/movie/presentation/widgets/upcoming_section.dart';
+import 'package:movie_app/movie/presentation/screens/logging_screen.dart';
+import 'package:movie_app/movie/presentation/widgets/movie_section_widget.dart';
+import 'package:movie_app/movie/presentation/widgets/star_section_widget.dart';
+import 'package:movie_app/movie/presentation/widgets/upcoming_section_widget.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 void main() {
@@ -21,14 +22,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final viewModel = getIt<MoviesViewModel>();
-  
+
   late Stream<List<Movie>> _getMovies;
   @override
   void initState() {
     super.initState();
     _getMovies = viewModel.movieStream();
   }
-  //   leading: Image.asset('assets/profileIcon.png'),
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +48,12 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 8,
           ),
           GestureDetector(
-            onTap: () => print('tapped'),
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const FavoriteScreen())),
             child: const Icon(
-              Icons.search,
+              Icons.favorite,
               size: 30,
             ),
           ),
@@ -68,10 +71,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 loading: (_) =>
                     const Center(child: CircularProgressIndicator()),
                 error: (value) => Text(value.error),
-                success: (value) => UpComingSection(
+                success: (value) => UpComingSectionWidget(
                     title: 'Out in Cinema', movies: value.data));
           }),
-          const StarSection(title: 'Stars'),
+          const StarSectionWidget(title: 'Stars'),
           Observer(builder: (context) {
             return viewModel.topRatedMovies.map(
                 initial: (_) =>
@@ -79,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 loading: (_) =>
                     const Center(child: CircularProgressIndicator()),
                 error: (value) => Text(value.error),
-                success: (value) => MovieSection(
+                success: (value) => MovieSectionWidget(
                     title: 'Top Rated Movies', movies: value.data));
           }),
           StreamBuilder<List<Movie>>(
@@ -89,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   return Text("error");
                 else if (snapshot.connectionState == ConnectionState.waiting)
                   return CircularProgressIndicator();
-                return MovieSection(
+                return MovieSectionWidget(
                     title: "Popula Movies", movies: snapshot.requireData);
               }),
           Observer(builder: (context) {
@@ -99,8 +102,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 loading: (_) =>
                     const Center(child: CircularProgressIndicator()),
                 error: (value) => Text(value.error),
-                success: (value) =>
-                    MovieSection(title: 'Airing Today', movies: value.data));
+                success: (value) => MovieSectionWidget(
+                    title: 'Airing Today', movies: value.data));
           })
         ],
       ),

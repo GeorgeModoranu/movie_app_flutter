@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 
 import '../../domain/movie.dart';
 
-class UpComingSection extends StatelessWidget {
+class UpComingSectionWidget extends StatelessWidget {
   final String title;
   final List<Movie> movies;
-  const UpComingSection({Key? key, required this.title, required this.movies})
+  const UpComingSectionWidget(
+      {Key? key, required this.title, required this.movies})
       : super(key: key);
 
   @override

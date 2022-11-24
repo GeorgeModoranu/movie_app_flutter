@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movie_app/core/di.iconfig.dart';
-import 'package:movie_app/movie/presentation/screens/detailPage.dart';
-import 'package:movie_app/movie/presentation/screens/homeScreen.dart';
-import 'package:movie_app/movie/presentation/screens/loggingScreen.dart';
+import 'package:movie_app/movie/presentation/screens/detail_screen.dart';
+import 'package:movie_app/movie/presentation/screens/home_screen.dart';
+import 'package:movie_app/movie/presentation/screens/logging_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,7 +43,7 @@ final GoRouter _router = GoRouter(
             name: 'detailPage',
             path: 'detailPage/:movieId',
             builder: (context, state) =>
-                DetailPage(movieId: int.parse(state.params['movieId']!)),
+                DetailsScreen(movieId: int.parse(state.params['movieId']!)),
           ),
         ]),
   ],

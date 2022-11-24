@@ -3,11 +3,12 @@ import 'package:go_router/go_router.dart';
 
 import '../../domain/movie.dart';
 
-class MovieSection extends StatelessWidget {
+class MovieSectionWidget extends StatelessWidget {
   final String title;
   final List<Movie> movies;
 
-  const MovieSection({super.key, required this.title, required this.movies});
+  const MovieSectionWidget(
+      {super.key, required this.title, required this.movies});
 
   @override
   Widget build(BuildContext context) {

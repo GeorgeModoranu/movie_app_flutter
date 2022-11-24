@@ -11,7 +11,7 @@ part 'movies_view_model.g.dart';
 class MoviesViewModel extends MoviesViewModelBase with _$MoviesViewModel {
   MoviesViewModel(final MovieRepository repository) : super(repository);
 }
-
+//computed resourse view model
 abstract class MoviesViewModelBase with Store {
   final MovieRepository repository;
   MoviesViewModelBase(this.repository) {

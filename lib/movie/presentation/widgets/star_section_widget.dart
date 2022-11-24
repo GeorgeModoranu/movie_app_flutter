@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class StarSection extends StatelessWidget {
+class StarSectionWidget extends StatelessWidget {
   final String title;
-  const StarSection({super.key, required this.title});
+  const StarSectionWidget({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {

@@ -51,7 +51,7 @@ const String sessionId = 'sessionId';
 
 abstract class LoginRepositoryBase with Store {
   LoginRepositoryBase(this.loginApi, this.getRequestTokenApi,
-      this.newSessionToken, this.sharedPreferences) {}
+      this.newSessionToken, this.sharedPreferences);
 
   @observable
   bool isLogin = false;
@@ -86,7 +86,7 @@ abstract class LoginRepositoryBase with Store {
 
   Future<bool> checkAuth() async {
     final String? token = sharedPreferences.getString(requestToken);
-    print(token);
+
     if (token == null) return false;
 
     final String? tokenExpiredString =

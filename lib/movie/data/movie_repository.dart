@@ -1,4 +1,7 @@
 import 'package:injectable/injectable.dart';
+import 'package:mobx/mobx.dart';
+import 'package:movie_app/favorite/data/favorite_movie_dao.dart';
+import 'package:movie_app/favorite/domain/favorite_movie.dart';
 import 'package:movie_app/movie/data/movie_api.dart';
 import 'package:movie_app/movie/data/moive_dao.dart';
 import 'package:movie_app/movie/domain/movie.dart';
@@ -7,7 +10,12 @@ import 'package:movie_app/movie/domain/movie.dart';
 class MovieRepository {
   final MoviesApi api;
   final MovieDao _dao;
-  MovieRepository(this.api, this._dao);
+  final FavoriteMoviesDao _favoriteMovieDao;
+
+  @observable
+  bool isFavorite = false;
+
+  MovieRepository(this.api, this._dao, this._favoriteMovieDao);
   Future<void> loadMovies({int page = 1}) async {
     final List<Movie> result = await api.getPopularMovies(page: page);
     await _dao.replaceAll(result);
@@ -33,6 +41,24 @@ class MovieRepository {
     final Movie result = await api.getMovieDetails(movieId);
     return result;
   }
-  
 
+  void addMovieToFavorite(Movie movie) {
+    final FavoriteMovie favoriteMovie = FavoriteMovie(
+        id: movie.id,
+        backdropPath: movie.backdropPath,
+        originalTitle: movie.originalTitle,
+        posterPath: movie.posterPath,
+        title: movie.title,
+        overview: movie.overview);
+    _favoriteMovieDao.addFavoriteMovie(favoriteMovie);
+  }
+
+  Stream<List<FavoriteMovie>> allFavoriteMovies() {
+    return _favoriteMovieDao.watchAllFavoriteMovies();
+  }
+  // Future<void> removeFaremoveMovieFromFavoritevoriteMovies(int id) async {
+
+  // }
+
+  // Stream<List<Movie>> getAllFavoirteMoives() {}
 }
