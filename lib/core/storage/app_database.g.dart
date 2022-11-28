@@ -253,63 +253,23 @@ class $MovieTableTable extends MovieTable
 }
 
 class FavoriteMoviesTableCompanion extends UpdateCompanion<FavoriteMovie> {
-  final Value<String> title;
-  final Value<String> originalTitle;
-  final Value<String> posterPath;
-  final Value<String> overview;
-  final Value<String> backdropPath;
   final Value<int> id;
   const FavoriteMoviesTableCompanion({
-    this.title = const Value.absent(),
-    this.originalTitle = const Value.absent(),
-    this.posterPath = const Value.absent(),
-    this.overview = const Value.absent(),
-    this.backdropPath = const Value.absent(),
     this.id = const Value.absent(),
   });
   FavoriteMoviesTableCompanion.insert({
-    required String title,
-    required String originalTitle,
-    required String posterPath,
-    required String overview,
-    required String backdropPath,
     this.id = const Value.absent(),
-  })  : title = Value(title),
-        originalTitle = Value(originalTitle),
-        posterPath = Value(posterPath),
-        overview = Value(overview),
-        backdropPath = Value(backdropPath);
+  });
   static Insertable<FavoriteMovie> custom({
-    Expression<String>? title,
-    Expression<String>? originalTitle,
-    Expression<String>? posterPath,
-    Expression<String>? overview,
-    Expression<String>? backdropPath,
     Expression<int>? id,
   }) {
     return RawValuesInsertable({
-      if (title != null) 'title': title,
-      if (originalTitle != null) 'original_title': originalTitle,
-      if (posterPath != null) 'poster_path': posterPath,
-      if (overview != null) 'overview': overview,
-      if (backdropPath != null) 'backdrop_path': backdropPath,
       if (id != null) 'id': id,
     });
   }
 
-  FavoriteMoviesTableCompanion copyWith(
-      {Value<String>? title,
-      Value<String>? originalTitle,
-      Value<String>? posterPath,
-      Value<String>? overview,
-      Value<String>? backdropPath,
-      Value<int>? id}) {
+  FavoriteMoviesTableCompanion copyWith({Value<int>? id}) {
     return FavoriteMoviesTableCompanion(
-      title: title ?? this.title,
-      originalTitle: originalTitle ?? this.originalTitle,
-      posterPath: posterPath ?? this.posterPath,
-      overview: overview ?? this.overview,
-      backdropPath: backdropPath ?? this.backdropPath,
       id: id ?? this.id,
     );
   }
@@ -317,21 +277,6 @@ class FavoriteMoviesTableCompanion extends UpdateCompanion<FavoriteMovie> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (title.present) {
-      map['title'] = Variable<String>(title.value);
-    }
-    if (originalTitle.present) {
-      map['original_title'] = Variable<String>(originalTitle.value);
-    }
-    if (posterPath.present) {
-      map['poster_path'] = Variable<String>(posterPath.value);
-    }
-    if (overview.present) {
-      map['overview'] = Variable<String>(overview.value);
-    }
-    if (backdropPath.present) {
-      map['backdrop_path'] = Variable<String>(backdropPath.value);
-    }
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
@@ -341,11 +286,6 @@ class FavoriteMoviesTableCompanion extends UpdateCompanion<FavoriteMovie> {
   @override
   String toString() {
     return (StringBuffer('FavoriteMoviesTableCompanion(')
-          ..write('title: $title, ')
-          ..write('originalTitle: $originalTitle, ')
-          ..write('posterPath: $posterPath, ')
-          ..write('overview: $overview, ')
-          ..write('backdropPath: $backdropPath, ')
           ..write('id: $id')
           ..write(')'))
         .toString();
@@ -361,11 +301,6 @@ class _$FavoriteMovieInsertable implements Insertable<FavoriteMovie> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     return FavoriteMoviesTableCompanion(
       id: Value(_object.id),
-      backdropPath: Value(_object.backdropPath),
-      originalTitle: Value(_object.originalTitle),
-      posterPath: Value(_object.posterPath),
-      title: Value(_object.title),
-      overview: Value(_object.overview),
     ).toColumns(false);
   }
 }
@@ -382,41 +317,13 @@ class $FavoriteMoviesTableTable extends FavoriteMoviesTable
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $FavoriteMoviesTableTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _titleMeta = const VerificationMeta('title');
-  @override
-  late final GeneratedColumn<String> title = GeneratedColumn<String>(
-      'title', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  final VerificationMeta _originalTitleMeta =
-      const VerificationMeta('originalTitle');
-  @override
-  late final GeneratedColumn<String> originalTitle = GeneratedColumn<String>(
-      'original_title', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  final VerificationMeta _posterPathMeta = const VerificationMeta('posterPath');
-  @override
-  late final GeneratedColumn<String> posterPath = GeneratedColumn<String>(
-      'poster_path', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  final VerificationMeta _overviewMeta = const VerificationMeta('overview');
-  @override
-  late final GeneratedColumn<String> overview = GeneratedColumn<String>(
-      'overview', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  final VerificationMeta _backdropPathMeta =
-      const VerificationMeta('backdropPath');
-  @override
-  late final GeneratedColumn<String> backdropPath = GeneratedColumn<String>(
-      'backdrop_path', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: false);
   @override
-  List<GeneratedColumn> get $columns =>
-      [title, originalTitle, posterPath, overview, backdropPath, id];
+  List<GeneratedColumn> get $columns => [id];
   @override
   String get aliasedName => _alias ?? 'favorite_movies_table';
   @override
@@ -426,42 +333,6 @@ class $FavoriteMoviesTableTable extends FavoriteMoviesTable
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('title')) {
-      context.handle(
-          _titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
-    } else if (isInserting) {
-      context.missing(_titleMeta);
-    }
-    if (data.containsKey('original_title')) {
-      context.handle(
-          _originalTitleMeta,
-          originalTitle.isAcceptableOrUnknown(
-              data['original_title']!, _originalTitleMeta));
-    } else if (isInserting) {
-      context.missing(_originalTitleMeta);
-    }
-    if (data.containsKey('poster_path')) {
-      context.handle(
-          _posterPathMeta,
-          posterPath.isAcceptableOrUnknown(
-              data['poster_path']!, _posterPathMeta));
-    } else if (isInserting) {
-      context.missing(_posterPathMeta);
-    }
-    if (data.containsKey('overview')) {
-      context.handle(_overviewMeta,
-          overview.isAcceptableOrUnknown(data['overview']!, _overviewMeta));
-    } else if (isInserting) {
-      context.missing(_overviewMeta);
-    }
-    if (data.containsKey('backdrop_path')) {
-      context.handle(
-          _backdropPathMeta,
-          backdropPath.isAcceptableOrUnknown(
-              data['backdrop_path']!, _backdropPathMeta));
-    } else if (isInserting) {
-      context.missing(_backdropPathMeta);
-    }
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
@@ -476,16 +347,6 @@ class $FavoriteMoviesTableTable extends FavoriteMoviesTable
     return FavoriteMovie(
       id: attachedDatabase.options.types
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      backdropPath: attachedDatabase.options.types
-          .read(DriftSqlType.string, data['${effectivePrefix}backdrop_path'])!,
-      originalTitle: attachedDatabase.options.types
-          .read(DriftSqlType.string, data['${effectivePrefix}original_title'])!,
-      posterPath: attachedDatabase.options.types
-          .read(DriftSqlType.string, data['${effectivePrefix}poster_path'])!,
-      title: attachedDatabase.options.types
-          .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
-      overview: attachedDatabase.options.types
-          .read(DriftSqlType.string, data['${effectivePrefix}overview'])!,
     );
   }
 

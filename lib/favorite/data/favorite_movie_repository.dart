@@ -8,18 +8,22 @@ class FavoriteMovieRepository {
   final FavoriteMoviesDao _favoriteMoviesDao;
   FavoriteMovieRepository(this._favoriteMoviesDao);
 
-  void addMovieToFavorite(Movie movie) {
-    final FavoriteMovie favoriteMovie = FavoriteMovie(
-        id: movie.id,
-        backdropPath: movie.backdropPath,
-        originalTitle: movie.originalTitle,
-        posterPath: movie.posterPath,
-        title: movie.title,
-        overview: movie.overview);
-    _favoriteMoviesDao.addFavoriteMovie(favoriteMovie);
+  Future<void> addMovieToFavorite(int movieId) async {
+    final FavoriteMovie favoriteMovie = FavoriteMovie(id: movieId);
+    await _favoriteMoviesDao.addFavoriteMovie(favoriteMovie);
   }
 
-  Stream<List<FavoriteMovie>> allFavoriteMovies() {
-    return _favoriteMoviesDao.watchAllFavoriteMovies();
+  Future<void> removeFavourite(int movieId) async {
+    await _favoriteMoviesDao.removeFavoriteMovie(movieId);
+  }
+
+  Stream<Set<int>> allFavoriteMovies() {
+    return _favoriteMoviesDao
+        .watchAllFavoriteMovies()
+        .map((list) => list.map((e) => e.id).toSet());
+  }
+
+  Stream<bool> isFavorite(int movieId) {
+    return _favoriteMoviesDao.getFavouriteMovieById(movieId);
   }
 }

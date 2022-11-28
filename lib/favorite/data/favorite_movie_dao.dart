@@ -26,7 +26,7 @@ class FavoriteMoviesDao {
   }
 
   Future<void> addFavoriteMovie(final FavoriteMovie movie) async {
-     await _db
+    await _db
         .into(_db.favoriteMoviesTable)
         .insertOnConflictUpdate(movie.toInsertable());
   }
@@ -35,5 +35,12 @@ class FavoriteMoviesDao {
     return (_db.delete(_db.favoriteMoviesTable)
           ..where((t) => t.id.equals(movieId)))
         .go();
+  }
+
+  Stream<bool> getFavouriteMovieById(int movieId) {
+    return (_db.select(_db.favoriteMoviesTable)
+          ..where((tbl) => tbl.id.equals(movieId)))
+        .watchSingleOrNull()
+        .map((event) => event != null);
   }
 }

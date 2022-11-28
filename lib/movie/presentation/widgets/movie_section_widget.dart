@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:movie_app/movie/presentation/widgets/movie_model.dart';
 
 import '../../domain/movie.dart';
 
 class MovieSectionWidget extends StatelessWidget {
   final String title;
-  final List<Movie> movies;
-
+  final List<MovieModel> movies;
+  final Function(int movieId) toggleFavorite;
   const MovieSectionWidget(
-      {super.key, required this.title, required this.movies});
+      {super.key,
+      required this.title,
+      required this.movies,
+      required this.toggleFavorite});
 
   @override
   Widget build(BuildContext context) {
@@ -40,25 +44,41 @@ class MovieSectionWidget extends StatelessWidget {
                   return Container(
                     padding: EdgeInsets.all(5),
                     width: 100,
-                    child: Column(
+                    child: Stack(
                       children: [
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             image: DecorationImage(
-                                image: NetworkImage(movies[index].posterPath),
+                                image: NetworkImage(
+                                    movies[index].movie.posterPath),
                                 fit: BoxFit.cover),
                           ),
-                          height: 160,
+                          height: 140,
                           child: GestureDetector(
                             onTap: () {
                               context.goNamed('detailPage', params: {
-                                'movieId': movies[index].id.toString()
+                                'movieId': movies[index].movie.id.toString()
                               });
                             },
                           ),
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
+                        IconButton(
+                          onPressed: () =>
+                              toggleFavorite(movies[index].movie.id),
+                          icon: movies[index].isFavorite
+                              ? const Icon(
+                                  Icons.favorite,
+                                  size: 20,
+                                  color: Colors.red,
+                                )
+                              : const Icon(
+                                  Icons.favorite_border_outlined,
+                                  size: 20,
+                                  color: Colors.red,
+                                ),
+                        )
                       ],
                     ),
                   );

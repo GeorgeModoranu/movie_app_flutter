@@ -28,18 +28,24 @@ class MovieResponse with _$MovieResponse {
     required int id,
     required String title,
     required String overview,
-    @JsonKey(name: 'backdrop_path') required String backdropPath,
+    @JsonKey(name: 'backdrop_path') required String? backdropPath,
     @JsonKey(name: 'original_title') required String originalTitle,
     @JsonKey(name: 'poster_path') required String posterPath,
   }) = _MovieResponse;
   factory MovieResponse.fromJson(Map<String, dynamic> json) =>
       _$MovieResponseFromJson(json);
   Movie toDomain() {
+    final String movieBackdropPath;
+    if (backdropPath != null) {
+      movieBackdropPath = '${imageUrl}w500/$backdropPath';
+    } else {
+      movieBackdropPath = '';
+    }
     return Movie(
         id: id,
         title: title,
         overview: overview,
-        backdropPath: '${imageUrl}w500/$backdropPath',
+        backdropPath: movieBackdropPath,
         originalTitle: originalTitle,
         posterPath: '${imageUrl}original/$posterPath');
   }

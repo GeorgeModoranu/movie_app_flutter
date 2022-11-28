@@ -23,22 +23,23 @@ class FavoriteSectionWidget extends StatelessWidget {
               padding: EdgeInsets.all(5),
               child: Column(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      image: DecorationImage(
-                          image: NetworkImage(movies[index].posterPath),
-                          fit: BoxFit.fill),
-                    ),
-                    height: 200,
-                    child: GestureDetector(
-                      onTap: () {
-                        context.goNamed('detailPage',
-                            params: {'movieId': movies[index].id.toString()});
-                      },
-                    ),
-                  ),
+                  // Container(
+                  //   decoration: BoxDecoration(
+                  //     borderRadius: BorderRadius.circular(20),
+                  //     image: DecorationImage(
+                  //         image: NetworkImage(movies[index].id),
+                  //         fit: BoxFit.fill),
+                  //   ),
+                  //   height: 200,
+                  //   child: GestureDetector(
+                  //     onTap: () {
+                  //       context.goNamed('detailPage',
+                  //           params: {'movieId': movies[index].id.toString()});
+                  //     },
+                  //   ),
+                  // ),
                   SizedBox(height: 4),
+                  Text(movies[index].id.toString())
                 ],
               ),
             );

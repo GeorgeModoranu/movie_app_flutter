@@ -36,18 +36,16 @@ class _DetailsScreenState extends State<DetailsScreen> {
           backgroundColor: Colors.red,
           elevation: 5,
           actions: [
-            Container(
-              child: GestureDetector(
-                onTap: () {
-                  print('tapp favorite');
-                  viewModel.addMovieToFavorite();
-                },
-                child: const Icon(
-                  Icons.favorite,
-                  size: 30,
-                ),
-              ),
-            ),
+            IconButton(
+                onPressed: viewModel.toggleFavourites,
+                //viewModel.isFavourite.value = false;
+                icon: Observer(
+                  builder: (BuildContext context) => viewModel.isFavourite
+                      ? const Icon(Icons.favorite)
+                      : const Icon(Icons.favorite_border),
+                )
+                //icon: const Icon(Icons.favorite),
+                )
           ]),
       body: Column(
         children: [

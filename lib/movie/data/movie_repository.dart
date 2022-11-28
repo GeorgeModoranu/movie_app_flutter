@@ -44,12 +44,13 @@ class MovieRepository {
 
   void addMovieToFavorite(Movie movie) {
     final FavoriteMovie favoriteMovie = FavoriteMovie(
-        id: movie.id,
-        backdropPath: movie.backdropPath,
-        originalTitle: movie.originalTitle,
-        posterPath: movie.posterPath,
-        title: movie.title,
-        overview: movie.overview);
+      id: movie.id,
+      // backdropPath: movie.backdropPath,
+      // originalTitle: movie.originalTitle,
+      // posterPath: movie.posterPath,
+      // title: movie.title,
+      // overview: movie.overview
+    );
     _favoriteMovieDao.addFavoriteMovie(favoriteMovie);
   }
 

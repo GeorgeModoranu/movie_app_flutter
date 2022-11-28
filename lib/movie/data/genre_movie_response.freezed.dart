@@ -241,7 +241,7 @@ mixin _$MovieResponse {
   String get title => throw _privateConstructorUsedError;
   String get overview => throw _privateConstructorUsedError;
   @JsonKey(name: 'backdrop_path')
-  String get backdropPath => throw _privateConstructorUsedError;
+  String? get backdropPath => throw _privateConstructorUsedError;
   @JsonKey(name: 'original_title')
   String get originalTitle => throw _privateConstructorUsedError;
   @JsonKey(name: 'poster_path')
@@ -263,7 +263,7 @@ abstract class $MovieResponseCopyWith<$Res> {
       {int id,
       String title,
       String overview,
-      @JsonKey(name: 'backdrop_path') String backdropPath,
+      @JsonKey(name: 'backdrop_path') String? backdropPath,
       @JsonKey(name: 'original_title') String originalTitle,
       @JsonKey(name: 'poster_path') String posterPath});
 }
@@ -284,7 +284,7 @@ class _$MovieResponseCopyWithImpl<$Res, $Val extends MovieResponse>
     Object? id = null,
     Object? title = null,
     Object? overview = null,
-    Object? backdropPath = null,
+    Object? backdropPath = freezed,
     Object? originalTitle = null,
     Object? posterPath = null,
   }) {
@@ -301,10 +301,10 @@ class _$MovieResponseCopyWithImpl<$Res, $Val extends MovieResponse>
           ? _value.overview
           : overview // ignore: cast_nullable_to_non_nullable
               as String,
-      backdropPath: null == backdropPath
+      backdropPath: freezed == backdropPath
           ? _value.backdropPath
           : backdropPath // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       originalTitle: null == originalTitle
           ? _value.originalTitle
           : originalTitle // ignore: cast_nullable_to_non_nullable
@@ -329,7 +329,7 @@ abstract class _$$_MovieResponseCopyWith<$Res>
       {int id,
       String title,
       String overview,
-      @JsonKey(name: 'backdrop_path') String backdropPath,
+      @JsonKey(name: 'backdrop_path') String? backdropPath,
       @JsonKey(name: 'original_title') String originalTitle,
       @JsonKey(name: 'poster_path') String posterPath});
 }
@@ -348,7 +348,7 @@ class __$$_MovieResponseCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? overview = null,
-    Object? backdropPath = null,
+    Object? backdropPath = freezed,
     Object? originalTitle = null,
     Object? posterPath = null,
   }) {
@@ -365,10 +365,10 @@ class __$$_MovieResponseCopyWithImpl<$Res>
           ? _value.overview
           : overview // ignore: cast_nullable_to_non_nullable
               as String,
-      backdropPath: null == backdropPath
+      backdropPath: freezed == backdropPath
           ? _value.backdropPath
           : backdropPath // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       originalTitle: null == originalTitle
           ? _value.originalTitle
           : originalTitle // ignore: cast_nullable_to_non_nullable
@@ -404,7 +404,7 @@ class _$_MovieResponse extends _MovieResponse {
   final String overview;
   @override
   @JsonKey(name: 'backdrop_path')
-  final String backdropPath;
+  final String? backdropPath;
   @override
   @JsonKey(name: 'original_title')
   final String originalTitle;
@@ -458,7 +458,7 @@ abstract class _MovieResponse extends MovieResponse {
           {required final int id,
           required final String title,
           required final String overview,
-          @JsonKey(name: 'backdrop_path') required final String backdropPath,
+          @JsonKey(name: 'backdrop_path') required final String? backdropPath,
           @JsonKey(name: 'original_title') required final String originalTitle,
           @JsonKey(name: 'poster_path') required final String posterPath}) =
       _$_MovieResponse;
@@ -475,7 +475,7 @@ abstract class _MovieResponse extends MovieResponse {
   String get overview;
   @override
   @JsonKey(name: 'backdrop_path')
-  String get backdropPath;
+  String? get backdropPath;
   @override
   @JsonKey(name: 'original_title')
   String get originalTitle;

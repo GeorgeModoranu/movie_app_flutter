@@ -77,7 +77,7 @@ abstract class LoginRepositoryBase with Store {
 
       await sharedPreferences.setString(sessionId, session.value);
 
-      checkAutentification();
+      isLogin = true;
       return true;
     } catch (ex) {
       return false;
@@ -99,6 +99,7 @@ abstract class LoginRepositoryBase with Store {
 
     final Duration diff = tokenExpiredDate.difference(now);
     if (diff.inMilliseconds <= 0) {
+      isLogin = false;
       return false;
     }
     return true;

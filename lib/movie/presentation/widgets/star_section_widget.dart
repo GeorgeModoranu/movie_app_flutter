@@ -27,7 +27,7 @@ class StarSectionWidget extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               scrollDirection: Axis.horizontal,
               itemCount: 10, //count the list
-              itemBuilder: (context, index) => Image.asset('stars.png')),
+              itemBuilder: (context, index) => Image.asset('assets/stars.png')),
         ),
       ],
     );
