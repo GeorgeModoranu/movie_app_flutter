@@ -1,8 +1,10 @@
 import 'dart:ffi';
 
+import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:movie_app/core/storage/app_database.dart';
 import 'package:movie_app/favorite/domain/favorite_movie.dart';
+import 'package:movie_app/movie/domain/movie.dart';
 
 export 'package:movie_app/favorite/data/favorite_movie_tabel.dart';
 
@@ -15,8 +17,12 @@ class FavoriteMoviesDao {
     return _db.select(_db.favoriteMoviesTable).watch();
   }
 
-  Future<List<FavoriteMovie>> getAllFavoriteMovies() {
-    return _db.select(_db.favoriteMoviesTable).get();
+  Future<List<Movie>> getAllFavoriteMovies() {
+    final query = _db.select(_db.favoriteMoviesTable).join([
+      innerJoin(_db.movieTable,
+          _db.movieTable.id.equalsExp(_db.favoriteMoviesTable.id))
+    ]).map((row) => row.readTable(_db.movieTable));
+    return query.get();
   }
 
   Future<void> deleteAllFavoriteMovies() {

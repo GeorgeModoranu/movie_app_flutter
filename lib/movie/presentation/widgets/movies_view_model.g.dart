@@ -9,6 +9,13 @@ part of 'movies_view_model.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$MoviesViewModel on MoviesViewModelBase, Store {
+  Computed<bool>? _$isLoadingComputed;
+
+  @override
+  bool get isLoading =>
+      (_$isLoadingComputed ??= Computed<bool>(() => super.isLoading,
+              name: 'MoviesViewModelBase.isLoading'))
+          .value;
   Computed<String?>? _$loadingErrorComputed;
 
   @override
@@ -16,13 +23,13 @@ mixin _$MoviesViewModel on MoviesViewModelBase, Store {
       (_$loadingErrorComputed ??= Computed<String?>(() => super.loadingError,
               name: 'MoviesViewModelBase.loadingError'))
           .value;
-  Computed<List<MovieModel>>? _$allMoviesComputed;
+  Computed<Resource<List<MovieModel>>>? _$allMoviesComputed;
 
   @override
-  List<MovieModel> get allMovies =>
-      (_$allMoviesComputed ??= Computed<List<MovieModel>>(() => super.allMovies,
+  Resource<List<MovieModel>> get allMovies => (_$allMoviesComputed ??=
+          Computed<Resource<List<MovieModel>>>(() => super.allMovies,
               name: 'MoviesViewModelBase.allMovies'))
-          .value;
+      .value;
 
   late final _$popularMoviesAtom =
       Atom(name: 'MoviesViewModelBase.popularMovies', context: context);
@@ -95,6 +102,7 @@ popularMovies: ${popularMovies},
 topRatedMovies: ${topRatedMovies},
 nowPlayingMovies: ${nowPlayingMovies},
 outInCinema: ${outInCinema},
+isLoading: ${isLoading},
 loadingError: ${loadingError},
 allMovies: ${allMovies}
     ''';

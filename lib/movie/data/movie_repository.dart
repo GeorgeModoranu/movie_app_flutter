@@ -8,7 +8,7 @@ import 'package:movie_app/movie/domain/movie.dart';
 
 @lazySingleton
 class MovieRepository {
-  final MoviesApi api;
+  final IMoviesApi api;
   final MovieDao _dao;
   final FavoriteMoviesDao _favoriteMovieDao;
 
@@ -45,11 +45,6 @@ class MovieRepository {
   void addMovieToFavorite(Movie movie) {
     final FavoriteMovie favoriteMovie = FavoriteMovie(
       id: movie.id,
-      // backdropPath: movie.backdropPath,
-      // originalTitle: movie.originalTitle,
-      // posterPath: movie.posterPath,
-      // title: movie.title,
-      // overview: movie.overview
     );
     _favoriteMovieDao.addFavoriteMovie(favoriteMovie);
   }
@@ -57,9 +52,4 @@ class MovieRepository {
   Stream<List<FavoriteMovie>> allFavoriteMovies() {
     return _favoriteMovieDao.watchAllFavoriteMovies();
   }
-  // Future<void> removeFaremoveMovieFromFavoritevoriteMovies(int id) async {
-
-  // }
-
-  // Stream<List<Movie>> getAllFavoirteMoives() {}
 }

@@ -58,15 +58,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 error: (value) => Text(value.error),
                 success: (value) => MovieDetailsWidget(movie: value.data));
           }),
-          StreamBuilder<List<FavoriteMovie>>(
-              stream: viewModel.favoriteMovieStrem(),
-              builder: (context, snapshot) {
-                if (snapshot.hasError)
-                  return Text(snapshot.error.toString());
-                else if (snapshot.connectionState == ConnectionState.waiting)
-                  return CircularProgressIndicator();
-                return Text(snapshot.requireData.toString());
-              }),
         ],
       ),
     );

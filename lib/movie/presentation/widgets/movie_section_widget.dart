@@ -7,7 +7,7 @@ import '../../domain/movie.dart';
 class MovieSectionWidget extends StatelessWidget {
   final String title;
   final List<MovieModel> movies;
-  final Function(int movieId) toggleFavorite;
+  final Function(int movieId, bool favorite) toggleFavorite;
   const MovieSectionWidget(
       {super.key,
       required this.title,
@@ -24,7 +24,7 @@ class MovieSectionWidget extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: Container(
-              constraints: BoxConstraints(minWidth: 72),
+              constraints: const BoxConstraints(minWidth: 72),
               decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                       bottomRight: Radius.circular(4),
@@ -34,55 +34,74 @@ class MovieSectionWidget extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 190,
+            height: 200,
             child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 scrollDirection: Axis.horizontal,
                 itemCount: movies.length,
                 itemBuilder: (context, index) {
-                  return Container(
-                    padding: EdgeInsets.all(5),
-                    width: 100,
-                    child: Stack(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            image: DecorationImage(
-                                image: NetworkImage(
-                                    movies[index].movie.posterPath),
-                                fit: BoxFit.cover),
-                          ),
-                          height: 140,
-                          child: GestureDetector(
-                            onTap: () {
-                              context.goNamed('detailPage', params: {
-                                'movieId': movies[index].movie.id.toString()
-                              });
-                            },
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        IconButton(
-                          onPressed: () =>
-                              toggleFavorite(movies[index].movie.id),
-                          icon: movies[index].isFavorite
-                              ? const Icon(
-                                  Icons.favorite,
-                                  size: 20,
-                                  color: Colors.red,
-                                )
-                              : const Icon(
-                                  Icons.favorite_border_outlined,
-                                  size: 20,
-                                  color: Colors.red,
-                                ),
-                        )
-                      ],
-                    ),
-                  );
+                  return MovieItem(
+                      movieModel: movies[index],
+                      toggleFavorite: toggleFavorite);
                 }),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class MovieItem extends StatelessWidget {
+  const MovieItem({
+    Key? key,
+    required this.movieModel,
+    required this.toggleFavorite,
+  }) : super(key: key);
+
+  final MovieModel movieModel;
+  final Function(int movieId, bool favorite) toggleFavorite;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(5),
+      width: 130,
+      child: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              image: DecorationImage(
+                  image: NetworkImage(movieModel.movie.posterPath),
+                  fit: BoxFit.cover),
+            ),
+            height: 200,
+            child: GestureDetector(
+              onTap: () {
+                context.goNamed('detailPage',
+                    params: {'movieId': movieModel.movie.id.toString()});
+              },
+            ),
+          ),
+          const SizedBox(height: 4),
+          Container(
+            margin: EdgeInsets.only(left: 90, top: 145),
+            child: IconButton(
+              onPressed: () =>
+                  toggleFavorite(movieModel.movie.id, !movieModel.isFavorite),
+              icon: movieModel.isFavorite
+                  ? const Icon(
+                      Icons.favorite,
+                      size: 30,
+                      color: Colors.red,
+                    )
+                  : const Icon(
+                      Icons.favorite_border_outlined,
+                      size: 30,
+                      color: Colors.red,
+                    ),
+            ),
           )
         ],
       ),

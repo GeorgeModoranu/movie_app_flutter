@@ -8,21 +8,21 @@
 import 'package:dio/dio.dart' as _i4;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
-import 'package:shared_preferences/shared_preferences.dart' as _i11;
+import 'package:shared_preferences/shared_preferences.dart' as _i12;
 
-import '../auth/data/login_API_request.dart' as _i6;
-import '../auth/data/login_repository.dart' as _i13;
-import '../auth/data/request_token_api.dart' as _i9;
-import '../auth/presentation/login_view_model.dart' as _i14;
+import '../auth/data/login_API_request.dart' as _i7;
+import '../auth/data/login_repository.dart' as _i15;
+import '../auth/data/request_token_api.dart' as _i10;
+import '../auth/presentation/login_view_model.dart' as _i16;
 import '../favorite/data/favorite_movie_dao.dart' as _i5;
-import '../favorite/data/favorite_movie_repository.dart' as _i12;
-import '../favorite/presentation/favorite_view_model.dart' as _i17;
-import '../movie/data/moive_dao.dart' as _i7;
-import '../movie/data/movie_api.dart' as _i8;
-import '../movie/data/movie_repository.dart' as _i15;
-import '../movie/presentation/widgets/movie_details_view_model.dart' as _i18;
-import '../movie/presentation/widgets/movies_view_model.dart' as _i16;
-import '../user/data/session_token.dart' as _i10;
+import '../favorite/data/favorite_movie_repository.dart' as _i13;
+import '../favorite/presentation/favorite_view_model.dart' as _i14;
+import '../movie/data/moive_dao.dart' as _i8;
+import '../movie/data/movie_api.dart' as _i6;
+import '../movie/data/movie_repository.dart' as _i9;
+import '../movie/presentation/widgets/movie_details_view_model.dart' as _i17;
+import '../movie/presentation/widgets/movies_view_model.dart' as _i18;
+import '../user/data/session_token.dart' as _i11;
 import 'network/network_module.dart' as _i20;
 import 'storage/app_database.dart' as _i3;
 import 'storage/storage_module.dart'
@@ -46,49 +46,54 @@ Future<_i1.GetIt> $initGetIt(
   gh.lazySingleton<_i4.Dio>(() => networkModule.dio);
   gh.lazySingleton<_i5.FavoriteMoviesDao>(
       () => _i5.FavoriteMoviesDao(get<_i3.AppDatabase>()));
-  gh.lazySingleton<_i6.LoginAPI>(() => _i6.LoginAPI(get<_i4.Dio>()));
-  gh.lazySingleton<_i7.MovieDao>(() => _i7.MovieDao(get<_i3.AppDatabase>()));
-  gh.lazySingleton<_i8.MoviesApi>(() => _i8.MoviesApi(get<_i4.Dio>()));
-  gh.lazySingleton<_i9.RequestTokenAPI>(
-      () => _i9.RequestTokenAPI(get<_i4.Dio>()));
-  gh.lazySingleton<_i10.SessionTokenApi>(
-      () => _i10.SessionTokenApi(get<_i4.Dio>()));
-  await gh.factoryAsync<_i11.SharedPreferences>(
+  gh.factory<_i6.IMoviesApi>(() => _i6.MoviesApi(get<_i4.Dio>()));
+  gh.lazySingleton<_i7.LoginAPI>(() => _i7.LoginAPI(get<_i4.Dio>()));
+  gh.lazySingleton<_i8.MovieDao>(() => _i8.MovieDao(get<_i3.AppDatabase>()));
+  gh.lazySingleton<_i9.MovieRepository>(() => _i9.MovieRepository(
+        get<_i6.IMoviesApi>(),
+        get<_i8.MovieDao>(),
+        get<_i5.FavoriteMoviesDao>(),
+      ));
+  gh.lazySingleton<_i10.RequestTokenAPI>(
+      () => _i10.RequestTokenAPI(get<_i4.Dio>()));
+  gh.lazySingleton<_i11.SessionTokenApi>(
+      () => _i11.SessionTokenApi(get<_i4.Dio>()));
+  await gh.factoryAsync<_i12.SharedPreferences>(
     () => storageModule.sharedPreferences,
     preResolve: true,
   );
-  gh.lazySingleton<_i12.FavoriteMovieRepository>(
-      () => _i12.FavoriteMovieRepository(get<_i5.FavoriteMoviesDao>()));
-  await gh.singletonAsync<_i13.LoginRepository>(
-    () => _i13.LoginRepository.create(
-      get<_i6.LoginAPI>(),
-      get<_i9.RequestTokenAPI>(),
-      get<_i10.SessionTokenApi>(),
-      get<_i11.SharedPreferences>(),
+  gh.lazySingleton<_i13.FavoriteMovieRepository>(
+      () => _i13.FavoriteMovieRepository(
+            get<_i5.FavoriteMoviesDao>(),
+            get<_i8.MovieDao>(),
+          ));
+  gh.factory<_i14.FavoritesViewModel>(() => _i14.FavoritesViewModel(
+        get<_i9.MovieRepository>(),
+        get<_i13.FavoriteMovieRepository>(),
+      ));
+  await gh.singletonAsync<_i15.LoginRepository>(
+    () => _i15.LoginRepository.create(
+      get<_i7.LoginAPI>(),
+      get<_i10.RequestTokenAPI>(),
+      get<_i11.SessionTokenApi>(),
+      get<_i12.SharedPreferences>(),
     ),
     preResolve: true,
   );
-  gh.factory<_i14.LoginViewModel>(
-      () => _i14.LoginViewModel(get<_i13.LoginRepository>()));
-  gh.lazySingleton<_i15.MovieRepository>(() => _i15.MovieRepository(
-        get<_i8.MoviesApi>(),
-        get<_i7.MovieDao>(),
-        get<_i5.FavoriteMoviesDao>(),
-      ));
-  gh.factory<_i16.MoviesViewModel>(() => _i16.MoviesViewModel(
-        get<_i15.MovieRepository>(),
-        get<_i12.FavoriteMovieRepository>(),
-      ));
-  gh.factory<_i17.FavoriteViewModel>(
-      () => _i17.FavoriteViewModel(get<_i15.MovieRepository>()));
-  gh.factoryParam<_i18.MovieDetailsViewModel, int, dynamic>((
+  gh.factory<_i16.LoginViewModel>(
+      () => _i16.LoginViewModel(get<_i15.LoginRepository>()));
+  gh.factoryParam<_i17.MovieDetailsViewModel, int, dynamic>((
     movieId,
     _,
   ) =>
-      _i18.MovieDetailsViewModel(
-        get<_i15.MovieRepository>(),
-        get<_i12.FavoriteMovieRepository>(),
+      _i17.MovieDetailsViewModel(
+        get<_i9.MovieRepository>(),
+        get<_i13.FavoriteMovieRepository>(),
         movieId,
+      ));
+  gh.factory<_i18.MoviesViewModel>(() => _i18.MoviesViewModel(
+        get<_i9.MovieRepository>(),
+        get<_i13.FavoriteMovieRepository>(),
       ));
   return get;
 }

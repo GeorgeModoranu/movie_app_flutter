@@ -29,12 +29,12 @@ abstract class MoviesViewModelBase with Store {
     getOutInCinema();
   }
 
-  // @observable
-  // bool get isLoading =>
-  //     popularMovies is ResourceLoading ||
-  //     topRatedMovies is ResourceLoading ||
-  //     nowPlayingMovies is ResourceLoading ||
-  //     outInCinema is ResourceLoading;
+  @computed
+  bool get isLoading =>
+      popularMovies is ResourceLoading ||
+      topRatedMovies is ResourceLoading ||
+      nowPlayingMovies is ResourceLoading ||
+      outInCinema is ResourceLoading;
 
   @computed
   String? get loadingError =>
@@ -69,38 +69,35 @@ abstract class MoviesViewModelBase with Store {
       favoriteRepo.allFavoriteMovies().asObservable();
 
   @computed
-  List<MovieModel> get allMovies {
-    final movies = moviesObs.data;
-    final favorite = favoriteMovieObs.data;
+  Resource<List<MovieModel>> get allMovies {
+    final movies = moviesObs.value;
+    final favorite = favoriteMovieObs.value;
     if (movies == null || favorite == null) {
-      return [];
+      return Resource.loading();
     }
-    return movies.map((movie) {
+    return Resource.success(
+        data: movies.map((movie) {
       final bool favoriteMovie = favorite.contains(movie.id);
       return MovieModel(movie, favoriteMovie);
-    }).toList();
+    }).toList());
   }
 
-  Future<void> toggleFavorite(int movieId) async {
-    if (allMovies
-            .firstWhereOrNull((movieModel) => movieModel.movie.id == movieId)
-            ?.isFavorite ??
-        false) {
-     await favoriteRepo.removeFavourite(movieId);
+  Future<void> toggleFavorite(int movieId, bool favorite) async {
+    if (favorite) {
+       await favoriteRepo.addMovieToFavorite(movieId);
     } else {
-      await favoriteRepo.addMovieToFavorite(movieId);
+       await favoriteRepo.removeFavourite(movieId);
     }
   }
-
-  Stream<List<MovieModel>> allMovieModels() {
-    return Rx.combineLatest2(
-        movieRepo.allMovies(),
-        favoriteRepo.allFavoriteMovies(),
-        (movieList, favoriteList) => movieList.map((movie) {
-              final bool favoriteMovie = favoriteList.contains(movie.id);
-              return MovieModel(movie, favoriteMovie);
-            }).toList());
-  }
+  // Stream<List<MovieModel>> allMovieModels() {
+  //   return Rx.combineLatest2(
+  //       movieRepo.allMovies(),
+  //       favoriteRepo.allFavoriteMovies(),
+  //       (movieList, favoriteList) => movieList.map((movie) {
+  //             final bool favoriteMovie = favoriteList.contains(movie.id);
+  //             return MovieModel(movie, favoriteMovie);
+  //           }).toList());
+  // }
 
   Stream<List<Movie>> movieStream() {
     return movieRepo.allMovies();
