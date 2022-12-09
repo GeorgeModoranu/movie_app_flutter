@@ -12,7 +12,7 @@ part 'app_database.g.dart';
 
 @DriftDatabase(tables: [MovieTable, FavoriteMoviesTable])
 class AppDatabase extends _$AppDatabase {
-  AppDatabase() : super(_openConnection());
+  AppDatabase(LazyDatabase openConnection) : super(openConnection);
 
   @override
   int get schemaVersion => 1;

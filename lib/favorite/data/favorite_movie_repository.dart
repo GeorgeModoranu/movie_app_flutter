@@ -23,12 +23,16 @@ class FavoriteMovieRepository {
     await _favoriteMoviesDao.removeFavoriteMovie(movieId);
   }
 
-  Stream<Set<int>> allFavoriteMovies() {
+  Stream<List<FavoriteMovie>> allFavoriteMovies() {
+    return _favoriteMoviesDao.watchAllFavoriteMovies();
+  }
+
+  Stream<Set<int>> allFavoriteMoviesId() {
     return _favoriteMoviesDao
         .watchAllFavoriteMovies()
         .map((list) => list.map((e) => e.id).toSet());
   }
-  
+
   Stream<bool> isFavorite(int movieId) {
     return _favoriteMoviesDao.getFavouriteMovieById(movieId);
   }

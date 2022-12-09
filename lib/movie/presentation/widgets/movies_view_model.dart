@@ -24,8 +24,6 @@ abstract class MoviesViewModelBase with Store {
   final FavoriteMovieRepository favoriteRepo;
   MoviesViewModelBase(this.movieRepo, this.favoriteRepo) {
     getMovies();
-    getMoviesRated();
-    getNowPlayingMovies();
     getOutInCinema();
   }
 
@@ -55,9 +53,8 @@ abstract class MoviesViewModelBase with Store {
   Future<void> getMovies({final int page = 1}) async {
     popularMovies = Resource.loading();
     try {
-      await Future.delayed(const Duration(seconds: 1));
-
-      movieRepo.loadMovies();
+    await Future.delayed(const Duration(seconds: 1));
+    movieRepo.loadMovies();
     } catch (ex) {
       popularMovies = Resource.error(error: ex.toString());
     }
@@ -66,7 +63,7 @@ abstract class MoviesViewModelBase with Store {
   late ObservableStream<List<Movie>> moviesObs =
       movieRepo.allMovies().asObservable();
   late ObservableStream<Set<int>> favoriteMovieObs =
-      favoriteRepo.allFavoriteMovies().asObservable();
+      favoriteRepo.allFavoriteMoviesId().asObservable();
 
   @computed
   Resource<List<MovieModel>> get allMovies {
@@ -84,9 +81,9 @@ abstract class MoviesViewModelBase with Store {
 
   Future<void> toggleFavorite(int movieId, bool favorite) async {
     if (favorite) {
-       await favoriteRepo.addMovieToFavorite(movieId);
+      await favoriteRepo.addMovieToFavorite(movieId);
     } else {
-       await favoriteRepo.removeFavourite(movieId);
+      await favoriteRepo.removeFavourite(movieId);
     }
   }
   // Stream<List<MovieModel>> allMovieModels() {
@@ -98,10 +95,6 @@ abstract class MoviesViewModelBase with Store {
   //             return MovieModel(movie, favoriteMovie);
   //           }).toList());
   // }
-
-  Stream<List<Movie>> movieStream() {
-    return movieRepo.allMovies();
-  }
 
   Future<void> getMoviesRated({final int page = 1}) async {
     topRatedMovies = Resource.loading();

@@ -11,19 +11,17 @@ part 'favorite_view_model.g.dart';
 @injectable
 class FavoritesViewModel extends FavoriteViewModelBase
     with _$FavoritesViewModel {
-  FavoritesViewModel(final MovieRepository movieRepo,
-      final FavoriteMovieRepository favoriteRepo)
-      : super(movieRepo, favoriteRepo);
+  FavoritesViewModel(final FavoriteMovieRepository favoriteRepo)
+      : super(favoriteRepo);
 }
 
 abstract class FavoriteViewModelBase with Store {
-  final MovieRepository movieRepo;
   final FavoriteMovieRepository favoriteRepo;
-  FavoriteViewModelBase(this.movieRepo, this.favoriteRepo) {
+  FavoriteViewModelBase(this.favoriteRepo) {
     favoriteMovieStrem();
   }
   Stream<List<FavoriteMovie>> favoriteMovieStrem() {
-    return movieRepo.allFavoriteMovies();
+    return favoriteRepo.allFavoriteMovies();
   }
 
   Future<void> removeFavoriteMovie(int movieId) async {

@@ -51,18 +51,4 @@ abstract class MovieDetailsViewModelBase with Store {
       movieDetails = Resource.error(error: ex.toString());
     }
   }
-
-  Future<void> addMovieToFavorite() async {
-    if (movieDetails is! ResourceSuccess) {
-      return;
-    }
-    final movie = movieDetails.data!;
-    return repository.addMovieToFavorite(movie);
-  }
-
-  Stream<List<FavoriteMovie>> favoriteMovieStrem() {
-    return repository.allFavoriteMovies();
-  }
-
-  Future<void> removeMovieFromFavorite(int id) async {}
 }

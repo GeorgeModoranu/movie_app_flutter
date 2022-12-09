@@ -40,12 +40,4 @@ class MovieDao {
           .insertOnConflictUpdate(movie.toInsertable());
     }
   }
-
-  // Future<void> saveMovie(final List<Movie> favoriteMovies) async {
-  //   for (final movie in favoriteMovies) {
-  //     await _db
-  //         .into(_db.movieTable)
-  //         .insertOnConflictUpdate(movie.toInsertable());
-  //   }
-  // }
 }
