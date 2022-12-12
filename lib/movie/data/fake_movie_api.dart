@@ -2,10 +2,13 @@ import 'dart:convert';
 
 import 'package:dio/src/dio.dart';
 import 'package:flutter/services.dart';
+import 'package:injectable/injectable.dart';
 import 'package:movie_app/movie/data/genre_movie_response.dart';
 import 'package:movie_app/movie/data/movie_api.dart';
 import 'package:movie_app/movie/domain/movie.dart';
 
+@LazySingleton(as: MoviesApi)
+@test
 class FakeMoviesApi implements MoviesApi {
   //final bool shouldThrowError;
   //FakeMoviesApi(this.shouldThrowError);
@@ -46,5 +49,5 @@ class FakeMoviesApi implements MoviesApi {
 
   @override
   // TODO: implement dio
-  Dio get dio => throw UnimplementedError();
+  Dio get _dio => throw UnimplementedError();
 }

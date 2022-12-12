@@ -33,11 +33,20 @@ class MovieDao {
     });
   }
 
+  // Future<void> upsertMovies(final List<Movie> movies) async {
+  //   for (final movie in movies) {
+  //     await _db
+  //         .into(_db.movieTable)
+  //         .insertOnConflictUpdate(movie.toInsertable());
+  //   }
+  // }
+
   Future<void> upsertMovies(final List<Movie> movies) async {
-    for (final movie in movies) {
-      await _db
-          .into(_db.movieTable)
-          .insertOnConflictUpdate(movie.toInsertable());
-    }
+    await _db.batch((batch) {
+      // functions in a batch don't have to be awaited - just
+      // await the whole batch afterwards.
+      batch.insertAllOnConflictUpdate(
+          _db.movieTable, movies.map((e) => e.toInsertable()));
+    });
   }
 }

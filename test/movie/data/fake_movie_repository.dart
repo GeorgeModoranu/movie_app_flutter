@@ -3,7 +3,7 @@ import 'package:movie_app/favorite/domain/favorite_movie.dart';
 import 'package:movie_app/movie/data/movie_repository.dart';
 import 'package:movie_app/movie/domain/movie.dart';
 
-class FakeMovieRepository implements MovieRepository{
+class FakeMovieRepository implements MovieRepository {
   @override
   late bool isFavorite;
 
@@ -26,7 +26,7 @@ class FakeMovieRepository implements MovieRepository{
 
   @override
   // TODO: implement api
-  MoviesApi get api => throw UnimplementedError();
+  MoviesApi get _api => throw UnimplementedError();
 
   @override
   Future<Movie> getMovieDetails(int movieId) {
@@ -57,5 +57,4 @@ class FakeMovieRepository implements MovieRepository{
     // TODO: implement loadMovies
     throw UnimplementedError();
   }
-  
 }
