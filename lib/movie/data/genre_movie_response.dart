@@ -37,7 +37,7 @@ class MovieResponse with _$MovieResponse {
   Movie toDomain() {
     final String movieBackdropPath;
     if (backdropPath != null) {
-      movieBackdropPath = '${imageUrl}w500/$backdropPath';
+      movieBackdropPath = '${imageUrl}w500$backdropPath';
     } else {
       movieBackdropPath = '';
     }
@@ -47,6 +47,6 @@ class MovieResponse with _$MovieResponse {
         overview: overview,
         backdropPath: movieBackdropPath,
         originalTitle: originalTitle,
-        posterPath: '${imageUrl}original/$posterPath');
+        posterPath: '${imageUrl}original$posterPath');
   }
 }

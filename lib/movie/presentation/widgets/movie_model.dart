@@ -3,31 +3,13 @@ import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 import 'package:movie_app/movie/domain/movie.dart';
 
-class MovieModel {
-  final Movie movie;
-  final bool isFavorite;
-  MovieModel(this.movie, this.isFavorite);
-  @override
-  bool operator ==(Object other) =>
-      other is MovieModel &&
-      other.runtimeType == runtimeType &&
-      other.movie == movie &&
-      other.isFavorite == isFavorite;
+part 'movie_model.freezed.dart';
 
-  @override
-  int get hashCode => movie.id.hashCode;
+@freezed
 
-  // @override
-  // String toString() {
-  //   return '''MovieModel(
-  //       Movie(
-  //           id: ${movie.id},
-  //           backdropPath: '${movie.backdropPath}',
-  //           originalTitle: '${movie.originalTitle}',
-  //           posterPath: '${movie.posterPath}',
-  //           title: '${movie.title}',
-  //           overview: '${movie.overview}'),
-  //       isFavorite = ${isFavorite})''';
-  // }
-
+class MovieModel with _$MovieModel {
+  factory MovieModel({
+    required Movie movie,
+    required bool isFavorite,
+  }) = _MovieModel;
 }

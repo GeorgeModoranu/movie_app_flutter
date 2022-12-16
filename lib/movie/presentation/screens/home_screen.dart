@@ -5,7 +5,7 @@ import 'package:movie_app/movie/domain/movie.dart';
 import 'package:movie_app/favorite/presentation/favorite_screen.dart';
 import 'package:movie_app/movie/presentation/widgets/movie_model.dart';
 import 'package:movie_app/movie/presentation/widgets/movies_view_model.dart';
-import 'package:movie_app/movie/presentation/screens/logging_screen.dart';
+import 'package:movie_app/auth/presentation/logging_screen.dart';
 import 'package:movie_app/movie/presentation/widgets/movie_section_widget.dart';
 import 'package:movie_app/movie/presentation/widgets/star_section_widget.dart';
 import 'package:movie_app/movie/presentation/widgets/upcoming_section_widget.dart';

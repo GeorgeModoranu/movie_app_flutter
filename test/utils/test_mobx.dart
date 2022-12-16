@@ -13,3 +13,12 @@ Future<T> asyncValue<T>(T Function(Reaction) fn,
   disposer();
   return item;
 }
+
+Stream<T> streamOf<T>(T Function(Reaction) fn) {
+  late final ReactionDisposer disposer;
+  final controller = StreamController<T>(onCancel: () => disposer());
+  disposer = reaction<T>(fn, (item) {
+    controller.add(item);
+  }, fireImmediately: true);
+  return controller.stream;
+}

@@ -15,9 +15,10 @@ class MovieRepository {
   bool isFavorite = false;
 
   MovieRepository(this._api, this._dao);
-  Future<void> loadMovies({int page = 1}) async {
+  Future<int> loadMovies({int page = 1}) async {
     final List<Movie> result = await _api.getPopularMovies(page: page);
     await _dao.replaceAll(result);
+    return result.length;
   }
 
   Future<List<Movie>> getTopRatedMovies({int page = 1}) async {

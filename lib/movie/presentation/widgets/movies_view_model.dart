@@ -25,6 +25,7 @@ abstract class MoviesViewModelBase with Store {
   MoviesViewModelBase(this.movieRepo, this.favoriteRepo) {
     getMovies();
     getOutInCinema();
+    refreshPopularMovies();
   }
 
   @computed
@@ -53,8 +54,8 @@ abstract class MoviesViewModelBase with Store {
   Future<void> getMovies({final int page = 1}) async {
     popularMovies = Resource.loading();
     try {
-    await Future.delayed(const Duration(seconds: 1));
-    movieRepo.loadMovies();
+      await Future.delayed(const Duration(seconds: 1));
+      movieRepo.loadMovies();
     } catch (ex) {
       popularMovies = Resource.error(error: ex.toString());
     }
@@ -69,14 +70,25 @@ abstract class MoviesViewModelBase with Store {
   Resource<List<MovieModel>> get allMovies {
     final movies = moviesObs.value;
     final favorite = favoriteMovieObs.value;
-    if (movies == null || favorite == null) {
+    final request = popularMovieReqeust;
+    if (movies == null || favorite == null || request == null) {
+      return Resource.initial();
+    }
+    final data = movies.map((movie) {
+      final bool favoriteMovie = favorite.contains(movie.id);
+      return MovieModel(movie: movie, isFavorite: favoriteMovie);
+    }).toList();
+    if (request.error != null) {
+      return Resource.error(error: request.error, data: data);
+    }
+    if (request.status == FutureStatus.pending) {
+      return Resource.loading(data: data.isEmpty ? null : data);
+    }
+    if (request.value != data.length) {
       return Resource.loading();
     }
-    return Resource.success(
-        data: movies.map((movie) {
-      final bool favoriteMovie = favorite.contains(movie.id);
-      return MovieModel(movie, favoriteMovie);
-    }).toList());
+
+    return Resource.success(data: data);
   }
 
   Future<void> toggleFavorite(int movieId, bool favorite) async {
@@ -86,15 +98,13 @@ abstract class MoviesViewModelBase with Store {
       await favoriteRepo.removeFavourite(movieId);
     }
   }
-  // Stream<List<MovieModel>> allMovieModels() {
-  //   return Rx.combineLatest2(
-  //       movieRepo.allMovies(),
-  //       favoriteRepo.allFavoriteMovies(),
-  //       (movieList, favoriteList) => movieList.map((movie) {
-  //             final bool favoriteMovie = favoriteList.contains(movie.id);
-  //             return MovieModel(movie, favoriteMovie);
-  //           }).toList());
-  // }
+
+  @observable
+  ObservableFuture<int>? popularMovieReqeust;
+
+  void refreshPopularMovies() {
+    popularMovieReqeust = ObservableFuture(movieRepo.loadMovies());
+  }
 
   Future<void> getMoviesRated({final int page = 1}) async {
     topRatedMovies = Resource.loading();

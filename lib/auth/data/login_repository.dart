@@ -54,7 +54,7 @@ abstract class LoginRepositoryBase with Store {
       this.newSessionToken, this.sharedPreferences);
 
   @observable
-  bool isLogin = false;
+  late bool isLogin = false;
 
   final LoginAPI loginApi;
   final RequestTokenAPI getRequestTokenApi;
@@ -76,8 +76,7 @@ abstract class LoginRepositoryBase with Store {
           .newSession(SessionLoad(requestToken: sesionToken.value));
 
       await sharedPreferences.setString(sessionId, session.value);
-
-      isLogin = true;
+      checkAutentification();
       return true;
     } catch (ex) {
       return false;

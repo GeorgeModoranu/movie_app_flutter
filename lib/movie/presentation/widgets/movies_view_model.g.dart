@@ -95,6 +95,22 @@ mixin _$MoviesViewModel on MoviesViewModelBase, Store {
     });
   }
 
+  late final _$popularMovieReqeustAtom =
+      Atom(name: 'MoviesViewModelBase.popularMovieReqeust', context: context);
+
+  @override
+  ObservableFuture<int>? get popularMovieReqeust {
+    _$popularMovieReqeustAtom.reportRead();
+    return super.popularMovieReqeust;
+  }
+
+  @override
+  set popularMovieReqeust(ObservableFuture<int>? value) {
+    _$popularMovieReqeustAtom.reportWrite(value, super.popularMovieReqeust, () {
+      super.popularMovieReqeust = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
@@ -102,6 +118,7 @@ popularMovies: ${popularMovies},
 topRatedMovies: ${topRatedMovies},
 nowPlayingMovies: ${nowPlayingMovies},
 outInCinema: ${outInCinema},
+popularMovieReqeust: ${popularMovieReqeust},
 isLoading: ${isLoading},
 loadingError: ${loadingError},
 allMovies: ${allMovies}
